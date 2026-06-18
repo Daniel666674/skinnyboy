@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkinnyBoy — Streetwear Colombiano Premium</title>
+  <meta name="description" content="SkinnyBoy — Streetwear colombiano premium diseñado para los que crean su propio camino." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Bebas Neue', 'Impact', 'sans-serif'],
+            body: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              black: '#0A0A0A',
+              white: '#F5F5F0',
+              yellow: '#FFD700',
+              gray: '#1A1A1A',
+              muted: '#6B6B6B',
+            }
+          },
+          animation: {
+            'marquee': 'marquee 30s linear infinite',
+            'fadeUp': 'fadeUp 0.6s ease forwards',
+            'slideIn': 'slideIn 0.4s ease forwards',
+          },
+          keyframes: {
+            marquee: {
+              '0%': { transform: 'translateX(0%)' },
+              '100%': { transform: 'translateX(-50%)' },
+            },
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(30px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            slideIn: {
+              '0%': { transform: 'translateX(100%)' },
+              '100%': { transform: 'translateX(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: #0A0A0A; color: #F5F5F0; font-family: 'Inter', system-ui, sans-serif; overflow-x: hidden; }
+
+    /* Reveal animations */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+    .stagger > * { opacity: 0; transform: translateY(30px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .stagger.visible > *:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0.1s; }
+    .stagger.visible > *:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 0.2s; }
+    .stagger.visible > *:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 0.3s; }
+    .stagger.visible > *:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 0.4s; }
+    .stagger.visible > *:nth-child(5) { opacity: 1; transform: translateY(0); transition-delay: 0.5s; }
+    .stagger.visible > *:nth-child(6) { opacity: 1; transform: translateY(0); transition-delay: 0.6s; }
+    .stagger.visible > *:nth-child(7) { opacity: 1; transform: translateY(0); transition-delay: 0.7s; }
+    .stagger.visible > *:nth-child(8) { opacity: 1; transform: translateY(0); transition-delay: 0.8s; }
+
+    /* Parallax */
+    .parallax-bg { background-attachment: fixed; background-size: cover; background-position: center; }
+    @media (max-width: 768px) { .parallax-bg { background-attachment: scroll; } }
+
+    /* Marquee */
+    .marquee-track { display: flex; width: max-content; animation: marquee 30s linear infinite; }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* Product card */
+    .product-card:hover .quick-view-btn { opacity: 1; transform: translateY(0); }
+    .quick-view-btn { opacity: 0; transform: translateY(10px); transition: opacity 0.3s ease, transform 0.3s ease; }
+    .product-card .product-img { transition: transform 0.5s ease; }
+    .product-card:hover .product-img { transform: scale(1.05); }
+
+    /* Collection card */
+    .collection-card .col-img { transition: transform 0.6s ease; }
+    .collection-card:hover .col-img { transform: scale(1.08); }
+
+    /* Gallery */
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-overlay { transition: opacity 0.3s ease; }
+
+    /* Modal */
+    .modal-backdrop { backdrop-filter: blur(8px); }
+    .modal-content { animation: fadeUp 0.3s ease forwards; }
+
+    /* Testimonial dots */
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #444; transition: background 0.3s ease, width 0.3s ease; cursor: pointer; }
+    .dot.active { background: #FFD700; width: 24px; border-radius: 4px; }
+
+    /* Toast */
+    .toast { transform: translateX(100%); transition: transform 0.4s ease; }
+    .toast.show { transform: translateX(0); }
+
+    /* Navbar */
+    .nav-link { position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: #FFD700; transition: width 0.3s ease; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* Mobile menu */
+    .mobile-menu { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .mobile-menu.open { transform: translateX(0); }
+
+    /* Size selector */
+    .size-btn { border: 1px solid #333; padding: 8px 14px; cursor: pointer; transition: all 0.2s ease; font-size: 13px; }
+    .size-btn:hover, .size-btn.selected { background: #FFD700; color: #0A0A0A; border-color: #FFD700; }
+
+    /* Newsletter */
+    .newsletter-input:focus { outline: none; border-color: #FFD700; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0A0A0A; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+  </style>
+</head>
+<body class="bg-brand-black text-brand-white">
+
+  <!-- ═══════════════════════════════════════════ 1. ANNOUNCEMENT BAR -->
+  <div class="bg-brand-yellow text-brand-black text-xs font-semibold tracking-widest overflow-hidden" style="height:36px; display:flex; align-items:center;">
+    <div class="marquee-track select-none" style="white-space:nowrap;">
+      <span class="px-8">✦ ENVÍO GRATIS EN PEDIDOS +$150.000 COP</span>
+      <span class="px-8">✦ DROPS LIMITADOS CADA VIERNES</span>
+      <span class="px-8">✦ DEVOLUCIONES GRATIS 30 DÍAS</span>
+      <span class="px-8">✦ HECHO EN COLOMBIA 🇨🇴</span>
+      <span class="px-8">✦ NUEVA COLECCIÓN DISPONIBLE AHORA</span>
+      <span class="px-8">✦ ENVÍO GRATIS EN PEDIDOS +$150.000 COP</span>
+      <span class="px-8">✦ DROPS LIMITADOS CADA VIERNES</span>
+      <span class="px-8">✦ DEVOLUCIONES GRATIS 30 DÍAS</span>
+      <span class="px-8">✦ HECHO EN COLOMBIA 🇨🇴</span>
+      <span class="px-8">✦ NUEVA COLECCIÓN DISPONIBLE AHORA</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ 2. NAVBAR -->
+  <nav id="navbar" class="sticky top-0 z-50 transition-all duration-300 border-b border-transparent" style="background: rgba(10,10,10,0.95); backdrop-filter: blur(12px);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-2 flex-shrink-0">
+          <span class="text-brand-yellow font-display text-3xl tracking-wider" style="letter-spacing:4px;">SKINNYBOY</span>
+        </a>
+        <!-- Desktop links -->
+        <div class="hidden md:flex items-center gap-8">
+          <a href="#colecciones" class="nav-link text-sm tracking-widest uppercase text-gray-300 hover:text-white transition-colors">Colecciones</a>
+          <a href="#best-sellers" class="nav-link text-sm tracking-widest uppercase text-gray-300 hover:text-white transition-colors">Best Sellers</a>
+          <a href="#nosotros" class="nav-link text-sm tracking-widest uppercase text-gray-300 hover:text-white transition-colors">Nosotros</a>
+          <a href="#drops" class="nav-link text-sm tracking-widest uppercase text-brand-yellow font-semibold">Drops ✦</a>
+        </div>
+        <!-- Right actions -->
+        <div class="flex items-center gap-4">
+          <!-- Cart -->
+          <button id="cart-btn" class="relative p-2 hover:text-brand-yellow transition-colors" aria-label="Carrito">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <span id="cart-badge" class="absolute -top-1 -right-1 bg-brand-yellow text-brand-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+          </button>
+          <!-- Hamburger -->
+          <button id="menu-btn" class="md:hidden p-2 hover:text-brand-yellow transition-colors" aria-label="Menú">
+            <div id="ham-icon">
+              <span class="block w-6 h-0.5 bg-current mb-1.5 transition-all duration-300"></span>
+              <span class="block w-6 h-0.5 bg-current mb-1.5 transition-all duration-300"></span>
+              <span class="block w-4 h-0.5 bg-current transition-all duration-300"></span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-menu fixed inset-y-0 right-0 w-full z-40 flex flex-col" style="background: #0A0A0A;">
+    <div class="flex items-center justify-between px-6 h-16 border-b border-gray-800">
+      <span class="text-brand-yellow font-display text-2xl tracking-wider">SKINNYBOY</span>
+      <button id="menu-close" class="p-2 hover:text-brand-yellow transition-colors" aria-label="Cerrar">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="flex flex-col gap-0 mt-8 px-6">
+      <a href="#colecciones" class="mobile-link py-5 text-3xl font-display tracking-widest border-b border-gray-800 hover:text-brand-yellow transition-colors">COLECCIONES</a>
+      <a href="#best-sellers" class="mobile-link py-5 text-3xl font-display tracking-widest border-b border-gray-800 hover:text-brand-yellow transition-colors">BEST SELLERS</a>
+      <a href="#nosotros" class="mobile-link py-5 text-3xl font-display tracking-widest border-b border-gray-800 hover:text-brand-yellow transition-colors">NOSOTROS</a>
+      <a href="#drops" class="mobile-link py-5 text-3xl font-display tracking-widest text-brand-yellow">DROPS ✦</a>
+    </div>
+    <div class="mt-auto px-6 pb-8">
+      <p class="text-gray-500 text-xs tracking-widest uppercase mb-4">Síguenos</p>
+      <div class="flex gap-4">
+        <a href="#" class="text-gray-400 hover:text-brand-yellow transition-colors">Instagram</a>
+        <a href="#" class="text-gray-400 hover:text-brand-yellow transition-colors">TikTok</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ 3. HERO -->
+  <section id="hero" class="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
+    <div class="parallax-bg absolute inset-0 z-0" id="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1920&q=80'); background-size: cover; background-position: center;"></div>
+    <div class="absolute inset-0 z-10" style="background: linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.7) 100%);"></div>
+    <div class="relative z-20 text-center px-4 max-w-5xl mx-auto">
+      <p class="text-brand-yellow text-xs tracking-[0.4em] uppercase mb-6 reveal">Streetwear Colombiano</p>
+      <h1 class="font-display text-[clamp(4rem,15vw,14rem)] leading-none tracking-wider mb-6 reveal" style="transition-delay:0.1s;">NOT FOR<br/>EVERYONE</h1>
+      <p class="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-10 font-light leading-relaxed reveal" style="transition-delay:0.2s;">Streetwear colombiano premium diseñado para los que crean su propio camino.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center reveal" style="transition-delay:0.3s;">
+        <a href="#colecciones" class="px-8 py-4 bg-brand-yellow text-brand-black font-semibold text-sm tracking-widest uppercase hover:bg-white transition-colors duration-300">Ver Colección</a>
+        <a href="#best-sellers" class="px-8 py-4 border border-white text-white font-semibold text-sm tracking-widest uppercase hover:border-brand-yellow hover:text-brand-yellow transition-colors duration-300">Best Sellers</a>
+      </div>
+    </div>
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 opacity-60">
+      <span class="text-xs tracking-widest uppercase text-gray-400">Scroll</span>
+      <div class="w-px h-12 bg-gradient-to-b from-gray-400 to-transparent animate-pulse"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ 4. TRUST BAR -->
+  <section class="bg-brand-gray border-y border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 py-6">
+      <div class="stagger grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div class="flex flex-col items-center gap-2">
+          <div class="w-10 h-10 text-brand-yellow flex items-center justify-center">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+          <p class="text-sm font-semibold tracking-wide">Envío Gratis</p>
+          <p class="text-xs text-gray-500">Pedidos +$150k</p>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <div class="w-10 h-10 text-brand-yellow flex items-center justify-center">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          </div>
+          <p class="text-sm font-semibold tracking-wide">Pago Seguro</p>
+          <p class="text-xs text-gray-500">SSL cifrado</p>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <div class="w-10 h-10 text-brand-yellow flex items-center justify-center">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+          </div>
+          <p class="text-sm font-semibold tracking-wide">Devoluciones</p>
+          <p class="text-xs text-gray-500">30 días gratis</p>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <div class="w-10 h-10 text-brand-yellow flex items-center justify-center">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="text-sm font-semibold tracking-wide">Calidad Premium</p>
+          <p class="text-xs text-gray-500">Hecho en Colombia</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ 5. FEATURED COLLECTIONS -->
+  <section id="colecciones" class="py-24 px-4 max-w-7xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="text-brand-yellow text-xs tracking-[0.4em] uppercase mb-3">Explorar</p>
+      <h2 class="font-display text-5xl md:text-7xl tracking-wider">COLECCIONES</h2>
+    </div>
+    <div class="stagger grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <a href="#" class="collection-card relative overflow-hidden group cursor-pointer" style="aspect-ratio:3/4;">
+        <img class="col-img absolute inset-0 w-full h-full object-cover" src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80" alt="Oversized Tees" loading="lazy" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-6">
+          <p class="text-xs tracking-widest uppercase text-gray-400 mb-1">Temporada 2026</p>
+          <h3 class="font-display text-3xl tracking-wider">OVERSIZED TEES</h3>
+          <p class="text-sm text-gray-400 mt-1 group-hover:text-brand-yellow transition-colors">Ver todo →</p>
+        </div>
+      </a>
+      <a href="#" class="collection-card relative overflow-hidden group cursor-pointer" style="aspect-ratio:3/4;">
+        <img class="col-img absolute inset-0 w-full h-full object-cover" src="https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=600&q=80" alt="Hoodies" loading="lazy" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-6">
+          <p class="text-xs tracking-widest uppercase text-gray-400 mb-1">Esenciales</p>
+          <h3 class="font-display text-3xl tracking-wider">HOODIES</h3>
+          <p class="text-sm text-gray-400 mt-1 group-hover:text-brand-yellow transition-colors">Ver todo →</p>
+        </div>
+      </a>
+      <a href="#" class="collection-card relative overflow-hidden group cursor-pointer" style="aspect-ratio:3/4;">
+        <img class="col-img absolute inset-0 w-full h-full object-cover" src="https://images.unsplash.com/photo-1594938298603-c8148c4b4083?w=600&q=80" alt="Pants" loading="lazy" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-6">
+          <p class="text-xs tracking-widest uppercase text-gray-400 mb-1">New Drop</p>
+          <h3 class="font-display text-3xl tracking-wider">PANTS</h3>
+          <p class="text-sm text-gray-400 mt-1 group-hover:text-brand-yellow transition-colors">Ver todo →</p>
+        </div>
+      </a>
+      <a href="#" class="collection-card relative overflow-hidden group cursor-pointer" style="aspect-ratio:3/4;">
+        <img class="col-img absolute inset-0 w-full h-full object-cover" src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&q=80" alt="Accesorios" loading="lazy" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-6">
+          <p class="text-xs tracking-widest uppercase text-gray-400 mb-1">Completa el look</p>
+          <h3 class="font-display text-3xl tracking-wider">ACCESORIOS</h3>
+          <p class="text-sm text-gray-400 mt-1 group-hover:text-brand-yellow transition-colors">Ver todo →</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ 6. BEST SELLERS -->
+  <section id="best-sellers" class="py-24 bg-brand-gray">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-16 reveal">
+        <p class="text-brand-yellow text-xs tracking-[0.4em] uppercase mb-3">Los más deseados</p>
+        <h2 class="font-display text-5xl md:text-7xl tracking-wider">BEST SELLERS</h2>
+      </div>
+      <div id="products-grid" class="stagger grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"></div>
+      <div class="text-center mt-12 reveal">
+        <a href="#" class="inline-block px-10 py-4 border border-gray-700 text-sm tracking-widest uppercase hover:border-brand-yellow hover:text-brand-yellow transition-colors duration-300">Ver Todo el Catálogo</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ 7. BRAND STORY -->
+  <section id="nosotros" class="py-24">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div class="reveal-left relative">
+          <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=800&q=80" alt="SkinnyBoy Story" class="w-full object-cover" style="aspect-ratio:4/5;" loading="lazy" />
+          <div class="absolute -bottom-6 -right-6 bg-brand-yellow text-brand-black p-6 hidden md:block">
+            <p class="font-display text-4xl">100%</p>
+            <p class="text-sm font-semibold tracking-widest uppercase">Colombia</p>
+          </div>
+        </div>
+        <div class="reveal-right">
+          <p class="text-brand-yellow text-xs tracking-[0.4em] uppercase mb-4">Nuestra historia</p>
+          <h2 class="font-display text-5xl md:text-6xl tracking-wider leading-tight mb-8">CONSTRUIDOS<br/>DIFERENTE.</h2>
+          <p class="text-gray-400 leading-relaxed mb-6">SkinnyBoy nació en Medellín con una misión simple: crear ropa que hable sin hablar. Piezas que representen la cultura callejera colombiana con la calidad que merece el mundo.</p>
+          <p class="text-gray-400 leading-relaxed mb-12">Cada pieza es diseñada, producida y distribuida desde Colombia. No somos un fast fashion, somos un movimiento.</p>
+          <div class="grid grid-cols-3 gap-8">
+            <div>
+              <p class="font-display text-4xl text-brand-yellow">5+</p>
+              <p class="text-xs text-gray-500 tracking-widest uppercase mt-1">Años en la calle</p>
+            </div>
+            <div>
+              <p class="font-display text-4xl text-brand-yellow">10K+</p>
+              <p class="text-xs text-gray-500 tracking-widest uppercase mt-1">Comunidad</p>
+            </div>
+            <div>
+              <p class="font-display text-4xl text-brand-yellow">100%</p>
+              <p class="text-xs text-gray-500 tracking-widest uppercase mt-1">Colombia</p>
+            </div>
+          </div>
+          <a href="#" class="inline-block mt-12 px-8 py-4 bg-brand-yellow text-brand-black font-semibold text-sm tracking-widest uppercase hover:bg-white transition-colors">Conocer Más</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ 8. LIFESTYLE EDITORIAL -->
+  <section id="drops" class="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
+    <div class="parallax-bg absolute inset-0" style="background-image: url('https://images.unsplash.com/photo-1613520771012-acfd6b82cf93?w=1920&q=80'); background-size: cover; background-position: center;"></div>
+    <div class="absolute inset-0" style="background: rgba(10,10,10,0.75);"></div>
+    <div class="relative z-10 text-center px-4 max-w-4xl mx-auto reveal">
+      <p class="text-brand-yellow text-xs tracking-[0.5em] uppercase mb-6">Nueva temporada</p>
+      <h2 class="font-display text-[clamp(4rem,12vw,10rem)] leading-none tracking-wider mb-8">LIVE YOUR<br/>LANE</h2>
+      <p class="text-gray-300 text-lg mb-10 font-light">La colección más ambiciosa de SkinnyBoy ya está aquí.</p>
+      <a href="#" class="inline-block px-10 py-4 bg-brand-yellow text-brand-black font-semibold text-sm tracking-widest uppercase hover:bg-white transition-colors">Ver el Drop →</a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ 9. CUSTOMER GALLERY -->
+  <section class="py-24 px-4 max-w-7xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="text-brand-yellow text-xs tracking-[0.4em] uppercase mb-3">La comunidad</p>
+      <h2 class="font-display text-5xl md:text-6xl tracking-wider">@SKINNYBOYCOL</h2>
+      <p class="text-gray-500 text-sm mt-4">Síguenos en Instagram y etiquétanos con <span class="text-white">#SkinnyBoyCol</span></p>
+    </div>
+    <div class="stagger grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+      <div class="gallery-item relative overflow-hidden cursor-pointer" style="aspect-ratio:1;">
+        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80" alt="Gallery" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" loading="lazy" />
+        <div class="gallery-overlay absolute inset-0 flex items-center justify-center opacity-0" style="background: rgba(10,10,10,0.6);">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+      </div>
+      <div class="gallery-item relative overflow-hidden cursor-pointer" style="aspect-ratio:1;">
+        <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=600&q=80" alt="Gallery" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" loading="lazy" />
+        <div class="gallery-overlay absolute inset-0 flex items-center justify-center opacity-0" style="background: rgba(10,10,10,0.6);">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+      </div>
+      <div class="gallery-item relative overflow-hidden cursor-pointer" style="aspect-ratio:1;">
+        <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600&q=80" alt="Gallery" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" loading="lazy" />
+        <div class="gallery-overlay absolute inset-0 flex items-center justify-center opacity-0" style="background: rgba(10,10,10,0.6);">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+      </div>
+      <div class="gallery-item relative overflow-hidden cursor-pointer" style="aspect-ratio:1;">
+        <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=600&q=80" alt="Gallery" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" loading="lazy" />
+        <div class="gallery-overlay absolute inset-0 flex items-center justify-center opacity-0" style="background: rgba(10,10,10,0.6);">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+      </div>
+      <div class="gallery-item relative overflow-hidden cursor-pointer" style="aspect-ratio:1;">
+        <img src="https://images.unsplash.com/photo-1543076447-215ad9ba6923?w=600&q=80" alt="Gallery" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" loading="lazy" />
+        <div class="gallery-overlay absolute inset-0 flex items-center justify-center opacity-0" style="background: rgba(10,10,10,0.6);">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+      </div>
+      <div class="gallery-item relative overflow-hidden cursor-pointer" style="aspect-ratio:1;">
+        <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80" alt="Gallery" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" loading="lazy" />
+        <div class="gallery-overlay absolute inset-0 flex items-center justify-center opacity-0" style="background: rgba(10,10,10,0.6);">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ 10. TESTIMONIALS -->
+  <section class="py-24 bg-brand-gray overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-16 reveal">
+        <p class="text-brand-yellow text-xs tracking-[0.4em] uppercase mb-3">Ellos lo dicen</p>
+        <h2 class="font-display text-5xl md:text-6xl tracking-wider">RESEÑAS</h2>
+      </div>
+      <!-- Carousel -->
+      <div class="relative">
+        <div id="testimonials-track" class="overflow-hidden">
+          <div id="testimonials-inner" class="flex transition-transform duration-500 ease-in-out" style="will-change:transform;"></div>
+        </div>
+        <!-- Arrows -->
+        <button id="prev-btn" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-8 w-12 h-12 border border-gray-700 flex items-center justify-center hover:border-brand-yellow hover:text-brand-yellow transition-colors z-10 bg-brand-gray">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button id="next-btn" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-8 w-12 h-12 border border-gray-700 flex items-center justify-center hover:border-brand-yellow hover:text-brand-yellow transition-colors z-10 bg-brand-gray">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+      <!-- Dots -->
+      <div id="dots" class="flex items-center justify-center gap-2 mt-8"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ 11. NEWSLETTER -->
+  <section class="py-32 px-4 text-center reveal">
+    <p class="text-brand-yellow text-xs tracking-[0.4em] uppercase mb-4">Sé el primero</p>
+    <h2 class="font-display text-5xl md:text-7xl tracking-wider mb-4">ÚNETE AL<br/>MOVIMIENTO</h2>
+    <p class="text-gray-400 mb-10 text-sm max-w-md mx-auto">Recibe acceso anticipado a drops, colecciones exclusivas y noticias del universo SkinnyBoy.</p>
+    <form id="newsletter-form" class="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto" novalidate>
+      <input type="email" id="newsletter-email" placeholder="tu@email.com" required
+        class="newsletter-input flex-1 bg-transparent border border-gray-700 px-5 py-4 text-sm text-white placeholder-gray-600 focus:border-brand-yellow transition-colors"
+        style="outline:none;" />
+      <button type="submit" class="px-8 py-4 bg-brand-yellow text-brand-black font-semibold text-sm tracking-widest uppercase hover:bg-white transition-colors whitespace-nowrap">Suscribirme</button>
+    </form>
+    <p class="text-gray-600 text-xs mt-4">Sin spam. Cancela cuando quieras.</p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ 12. FOOTER -->
+  <footer class="border-t border-gray-800 bg-brand-gray pt-16 pb-8 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-10 mb-16">
+        <!-- Brand -->
+        <div class="col-span-2 md:col-span-1">
+          <span class="font-display text-3xl text-brand-yellow tracking-wider block mb-4">SKINNYBOY</span>
+          <p class="text-gray-500 text-sm leading-relaxed mb-6">Streetwear colombiano premium. Diseñados para los que crean su propio camino.</p>
+          <div class="flex gap-4">
+            <a href="#" class="text-gray-400 hover:text-brand-yellow transition-colors" aria-label="Instagram">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-brand-yellow transition-colors" aria-label="TikTok">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.5a8.14 8.14 0 004.77 1.52V6.57a4.85 4.85 0 01-1-.12z"/></svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-brand-yellow transition-colors" aria-label="YouTube">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+          </div>
+        </div>
+        <!-- Tienda -->
+        <div>
+          <h4 class="text-xs tracking-widest uppercase font-semibold mb-5 text-white">Tienda</h4>
+          <ul class="space-y-3 text-sm text-gray-500">
+            <li><a href="#" class="hover:text-white transition-colors">Oversized Tees</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Hoodies</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Pants</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Accesorios</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Best Sellers</a></li>
+          </ul>
+        </div>
+        <!-- Información -->
+        <div>
+          <h4 class="text-xs tracking-widest uppercase font-semibold mb-5 text-white">Información</h4>
+          <ul class="space-y-3 text-sm text-gray-500">
+            <li><a href="#" class="hover:text-white transition-colors">Nuestra Historia</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Sostenibilidad</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Lookbook</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+          </ul>
+        </div>
+        <!-- Ayuda -->
+        <div>
+          <h4 class="text-xs tracking-widest uppercase font-semibold mb-5 text-white">Ayuda</h4>
+          <ul class="space-y-3 text-sm text-gray-500">
+            <li><a href="#" class="hover:text-white transition-colors">Guía de Tallas</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Envíos y Entregas</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Devoluciones</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Preguntas Frecuentes</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Contacto</a></li>
+          </ul>
+        </div>
+        <!-- Contacto -->
+        <div>
+          <h4 class="text-xs tracking-widest uppercase font-semibold mb-5 text-white">Contacto</h4>
+          <ul class="space-y-3 text-sm text-gray-500">
+            <li>Medellín, Colombia</li>
+            <li><a href="mailto:hola@skinnyboy.co" class="hover:text-white transition-colors">hola@skinnyboy.co</a></li>
+            <li>Lun – Vie: 9am – 6pm</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Bottom bar -->
+      <div class="border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-600">
+        <p>&copy; 2026 SkinnyBoy. Todos los derechos reservados.</p>
+        <div class="flex gap-6">
+          <a href="#" class="hover:text-gray-400 transition-colors">Privacidad</a>
+          <a href="#" class="hover:text-gray-400 transition-colors">Términos</a>
+          <a href="#" class="hover:text-gray-400 transition-colors">Cookies</a>
+        </div>
+        <p>Hecho con ♥ en Colombia 🇨🇴</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════ QUICK VIEW MODAL -->
+  <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center px-4 hidden">
+    <div class="modal-backdrop absolute inset-0 bg-black/80" id="modal-backdrop"></div>
+    <div class="modal-content relative bg-brand-gray border border-gray-800 w-full max-w-2xl max-h-[90vh] overflow-y-auto z-10">
+      <button id="modal-close" class="absolute top-4 right-4 p-2 hover:text-brand-yellow transition-colors z-10" aria-label="Cerrar">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="grid grid-cols-1 md:grid-cols-2">
+        <div class="relative" style="aspect-ratio:1;">
+          <img id="modal-img" src="" alt="" class="w-full h-full object-cover" />
+          <span id="modal-badge" class="absolute top-4 left-4 text-xs font-bold tracking-widest px-3 py-1"></span>
+        </div>
+        <div class="p-8 flex flex-col justify-center">
+          <p class="text-xs text-gray-500 tracking-widest uppercase mb-2">SkinnyBoy</p>
+          <h3 id="modal-name" class="font-display text-3xl tracking-wider mb-2"></h3>
+          <p id="modal-price" class="text-brand-yellow text-2xl font-semibold mb-6"></p>
+          <p class="text-sm text-gray-500 mb-6">Talla</p>
+          <div class="flex gap-2 flex-wrap mb-8" id="size-selector">
+            <button class="size-btn" data-size="XS">XS</button>
+            <button class="size-btn" data-size="S">S</button>
+            <button class="size-btn" data-size="M">M</button>
+            <button class="size-btn" data-size="L">L</button>
+            <button class="size-btn" data-size="XL">XL</button>
+          </div>
+          <button id="add-to-cart-btn" class="w-full py-4 bg-brand-yellow text-brand-black font-semibold text-sm tracking-widest uppercase hover:bg-white transition-colors">Agregar al Carrito</button>
+          <p class="text-xs text-gray-600 text-center mt-4">Envío gratis en pedidos +$150.000 COP</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast fixed bottom-6 right-6 z-50 bg-brand-yellow text-brand-black px-6 py-4 text-sm font-semibold flex items-center gap-3 shadow-2xl">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toast-msg">¡Agregado al carrito!</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ SCRIPTS -->
+  <script>
+    // ── DATA ──────────────────────────────────────────
+    const products = [
+      { id:1, name:'Tee Paralelo Negro', price:'$89.000', badge:'Best Seller', badgeColor:'bg-brand-yellow text-brand-black', img:'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&q=80' },
+      { id:2, name:'Hoodie Calle Gris', price:'$189.000', badge:'Limited', badgeColor:'bg-red-600 text-white', img:'https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=600&q=80' },
+      { id:3, name:'Cargo Pant Oliva', price:'$159.000', badge:'Nuevo', badgeColor:'bg-green-600 text-white', img:'https://images.unsplash.com/photo-1594938298603-c8148c4b4083?w=600&q=80' },
+      { id:4, name:'Tee Oversize Blanco', price:'$79.000', badge:'Best Seller', badgeColor:'bg-brand-yellow text-brand-black', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80' },
+      { id:5, name:'Bucket Hat Negro', price:'$59.000', badge:'Limited', badgeColor:'bg-red-600 text-white', img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&q=80' },
+      { id:6, name:'Hoodie Varsity Azul', price:'$199.000', badge:'Nuevo', badgeColor:'bg-green-600 text-white', img:'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=600&q=80' },
+      { id:7, name:'Tee Gráfico Urban', price:'$95.000', badge:'Sale', badgeColor:'bg-orange-500 text-white', img:'https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=600&q=80' },
+      { id:8, name:'Jogger Tech Gris', price:'$139.000', badge:'Best Seller', badgeColor:'bg-brand-yellow text-brand-black', img:'https://images.unsplash.com/photo-1542327897-d73f4005b533?w=600&q=80' },
+    ];
+
+    const testimonials = [
+      { name:'Santiago M.', handle:'@santi_medellin', rating:5, text:'La calidad es una locura. El hoodie que pedí llegó perfectamente empacado y la tela es premium. Definitivamente no es fast fashion, se nota la diferencia.', img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80' },
+      { name:'Valentina R.', handle:'@vale.r', rating:5, text:'Llevo 3 pedidos con SkinnyBoy y cada vez me sorprende más. El servicio es excelente y los diseños son únicos. Representan la cultura colombiana como nadie.', img:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80' },
+      { name:'Andrés P.', handle:'@andres_strt', rating:5, text:'La tee Paralelo es mi favorita. Talla perfecta, corte increíble. La uso para todo. Ya estoy esperando el próximo drop. 10/10.', img:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&q=80' },
+      { name:'Camila T.', handle:'@camila.t', rating:5, text:'Pedí el cargo pant y llegó en 2 días. Calidad brutal, el material es pesado de una buena manera. Me lo han preguntado mil veces por Instagram.', img:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&q=80' },
+      { name:'Felipe G.', handle:'@felipeg_co', rating:5, text:'SkinnyBoy es el único streetwear colombiano que compro. Cada pieza tiene carácter, no son copias baratas de marcas gringas. Mucho respeto por lo que hacen.', img:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&q=80' },
+    ];
+
+    // ── CART STATE ─────────────────────────────────────
+    let cartCount = 0;
+    let currentProduct = null;
+    let selectedSize = null;
+
+    // ── RENDER PRODUCTS ────────────────────────────────
+    const grid = document.getElementById('products-grid');
+    products.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'product-card relative overflow-hidden cursor-pointer';
+      card.innerHTML = `
+        <div class="relative overflow-hidden" style="aspect-ratio:3/4;">
+          <img class="product-img w-full h-full object-cover" src="${p.img}" alt="${p.name}" loading="lazy" />
+          <span class="absolute top-3 left-3 ${p.badgeColor} text-xs font-bold tracking-widest px-2 py-1">${p.badge}</span>
+          <div class="absolute inset-x-0 bottom-0 p-3">
+            <button class="quick-view-btn w-full py-3 bg-brand-black/90 text-white text-xs font-semibold tracking-widest uppercase hover:bg-brand-yellow hover:text-brand-black transition-colors" data-id="${p.id}">Quick View</button>
+          </div>
+        </div>
+        <div class="pt-3 pb-1">
+          <p class="text-xs text-gray-500 tracking-wider uppercase mb-1">SkinnyBoy</p>
+          <h3 class="text-sm font-medium">${p.name}</h3>
+          <p class="text-brand-yellow font-semibold mt-1">${p.price}</p>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    // ── QUICK VIEW ─────────────────────────────────────
+    const modal = document.getElementById('modal');
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('[data-id]');
+      if (!btn) return;
+      const id = parseInt(btn.dataset.id);
+      const product = products.find(p => p.id === id);
+      if (!product) return;
+      openModal(product);
+    });
+
+    function openModal(product) {
+      currentProduct = product;
+      selectedSize = null;
+      document.getElementById('modal-img').src = product.img;
+      document.getElementById('modal-img').alt = product.name;
+      document.getElementById('modal-name').textContent = product.name;
+      document.getElementById('modal-price').textContent = product.price;
+      const badge = document.getElementById('modal-badge');
+      badge.textContent = product.badge;
+      badge.className = `absolute top-4 left-4 text-xs font-bold tracking-widest px-3 py-1 ${product.badgeColor}`;
+      document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+      currentProduct = null;
+      selectedSize = null;
+    }
+
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    document.getElementById('modal-backdrop').addEventListener('click', closeModal);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    document.querySelectorAll('.size-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedSize = btn.dataset.size;
+      });
+    });
+
+    document.getElementById('add-to-cart-btn').addEventListener('click', () => {
+      if (!selectedSize) {
+        document.querySelectorAll('.size-btn')[2].classList.add('selected');
+        selectedSize = 'M';
+      }
+      cartCount++;
+      const badge = document.getElementById('cart-badge');
+      badge.textContent = cartCount;
+      badge.classList.remove('hidden');
+      closeModal();
+      showToast(`¡${currentProduct ? currentProduct.name : 'Producto'} agregado!`);
+    });
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // ── TESTIMONIALS CAROUSEL ──────────────────────────
+    const inner = document.getElementById('testimonials-inner');
+    const dotsEl = document.getElementById('dots');
+    let currentSlide = 0;
+    let slidesPerView = window.innerWidth >= 1024 ? 3 : 1;
+    let totalSlides = testimonials.length;
+    let autoTimer;
+
+    function getSlidesPerView() { return window.innerWidth >= 1024 ? 3 : 1; }
+    function getMaxSlide() { return Math.max(0, totalSlides - getSlidesPerView()); }
+
+    testimonials.forEach(t => {
+      const stars = '★'.repeat(t.rating) + '☆'.repeat(5 - t.rating);
+      const el = document.createElement('div');
+      el.className = 'flex-shrink-0 px-3';
+      el.style.width = `${100 / 3}%`;
+      el.innerHTML = `
+        <div class="border border-gray-800 p-8 h-full flex flex-col">
+          <div class="text-brand-yellow text-lg mb-4">${stars}</div>
+          <p class="text-gray-300 text-sm leading-relaxed flex-1 mb-6">"${t.text}"</p>
+          <div class="flex items-center gap-3">
+            <img src="${t.img}" alt="${t.name}" class="w-10 h-10 rounded-full object-cover" loading="lazy" />
+            <div>
+              <p class="text-sm font-semibold">${t.name}</p>
+              <p class="text-xs text-gray-600">${t.handle}</p>
+            </div>
+          </div>
+        </div>
+      `;
+      inner.appendChild(el);
+    });
+
+    function buildDots() {
+      dotsEl.innerHTML = '';
+      const max = getMaxSlide();
+      for (let i = 0; i <= max; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'dot' + (i === currentSlide ? ' active' : '');
+        dot.setAttribute('aria-label', `Slide ${i + 1}`);
+        dot.addEventListener('click', () => goTo(i));
+        dotsEl.appendChild(dot);
+      }
+    }
+
+    function goTo(index) {
+      const max = getMaxSlide();
+      currentSlide = Math.max(0, Math.min(index, max));
+      const pct = (100 / 3) * currentSlide;
+      inner.style.transform = `translateX(-${pct}%)`;
+      document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+      resetTimer();
+    }
+
+    function resetTimer() {
+      clearInterval(autoTimer);
+      autoTimer = setInterval(() => goTo((currentSlide + 1) > getMaxSlide() ? 0 : currentSlide + 1), 5000);
+    }
+
+    document.getElementById('prev-btn').addEventListener('click', () => goTo(currentSlide - 1));
+    document.getElementById('next-btn').addEventListener('click', () => goTo((currentSlide + 1) > getMaxSlide() ? 0 : currentSlide + 1));
+
+    function updateCarouselWidths() {
+      const spv = getSlidesPerView();
+      const w = 100 / spv;
+      inner.querySelectorAll(':scope > div').forEach(el => el.style.width = `${100 / 3}%`);
+      if (spv === 1) {
+        inner.querySelectorAll(':scope > div').forEach(el => el.style.width = '100%');
+      }
+      const max = getMaxSlide();
+      if (currentSlide > max) goTo(max);
+      buildDots();
+    }
+
+    window.addEventListener('resize', updateCarouselWidths);
+    updateCarouselWidths();
+    buildDots();
+    resetTimer();
+
+    // ── MOBILE MENU ────────────────────────────────────
+    const menuBtn = document.getElementById('menu-btn');
+    const menuClose = document.getElementById('menu-close');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    function openMenu() {
+      mobileMenu.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMenu() {
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    menuBtn.addEventListener('click', openMenu);
+    menuClose.addEventListener('click', closeMenu);
+    document.querySelectorAll('.mobile-link').forEach(a => a.addEventListener('click', closeMenu));
+
+    // ── SCROLL ANIMATIONS ──────────────────────────────
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .stagger').forEach(el => io.observe(el));
+
+    // ── PARALLAX HERO ──────────────────────────────────
+    const heroBg = document.getElementById('hero-bg');
+    function handleParallax() {
+      const scrolled = window.scrollY;
+      if (heroBg && window.innerWidth > 768) {
+        heroBg.style.transform = `translateY(${scrolled * 0.4}px)`;
+      }
+    }
+    window.addEventListener('scroll', handleParallax, { passive: true });
+
+    // ── NAVBAR ON SCROLL ───────────────────────────────
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 80) {
+        navbar.style.borderBottomColor = 'rgba(255,255,255,0.08)';
+      } else {
+        navbar.style.borderBottomColor = 'transparent';
+      }
+    }, { passive: true });
+
+    // ── NEWSLETTER ─────────────────────────────────────
+    document.getElementById('newsletter-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const email = document.getElementById('newsletter-email').value;
+      if (!email || !email.includes('@')) return;
+      showToast('¡Bienvenido al movimiento SkinnyBoy!');
+      document.getElementById('newsletter-email').value = '';
+    });
+  </script>
+</body>
+</html>
