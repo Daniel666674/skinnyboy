@@ -161,10 +161,7 @@
   <!-- HERO -->
   <section id="hero" class="relative overflow-hidden" style="min-height:100svh;display:flex;align-items:center;justify-content:center;">
     <div class="absolute inset-0 z-0">
-      <video autoplay muted loop playsinline class="w-full h-full object-cover" style="object-position:center;" poster="img/IMG_7509.jpg">
-        <source src="img/hero.mp4" type="video/mp4" />
-        <img src="img/IMG_7509.jpg" alt="Skinny Boy" class="w-full h-full object-cover" />
-      </video>
+      <img src="img/IMG_7509.jpg" alt="Skinny Boy" class="w-full h-full object-cover" style="object-position:center;" />
     </div>
     <div class="absolute inset-0 z-10" style="background:rgba(0,0,0,0.52);"></div>
     <div class="relative z-20 text-center px-4 w-full max-w-5xl mx-auto">
@@ -207,6 +204,26 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- VIDEO SECTION -->
+  <section class="py-20 px-4 max-w-7xl mx-auto reveal">
+    <div class="text-center mb-10">
+      <p class="text-sb-muted text-xs tracking-[0.4em] uppercase mb-3">El proceso</p>
+      <h2 class="font-display tracking-wider" style="font-size:clamp(2.8rem,10vw,6rem);">HECHO A MANO</h2>
+    </div>
+    <div class="relative w-full overflow-hidden bg-sb-black" style="aspect-ratio:16/9;max-height:80vh;">
+      <video id="brand-video" class="w-full h-full object-cover" playsinline loop muted poster="img/IMG_7509.jpg">
+        <source src="img/hero.mp4" type="video/mp4" />
+      </video>
+      <!-- Play/Pause overlay -->
+      <button id="video-toggle" class="absolute inset-0 w-full h-full flex items-center justify-center group" aria-label="Reproducir video">
+        <div id="play-icon" class="w-20 h-20 rounded-full bg-white/90 flex items-center justify-center shadow-xl transition-transform duration-300 group-hover:scale-110">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#0A0A0A" style="margin-left:4px;"><polygon points="5,3 19,12 5,21"/></svg>
+        </div>
+      </button>
+    </div>
+    <p class="text-center text-sb-muted text-xs tracking-widest uppercase mt-5">Exclusividad y Calidad · Hecho en Colombia 🇨🇴</p>
   </section>
 
   <!-- COLLECTIONS -->
@@ -679,6 +696,22 @@
     // Scroll reveal
     const io = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: .08, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .stagger').forEach(el => io.observe(el));
+
+    // Video play/pause toggle
+    const brandVideo = document.getElementById('brand-video');
+    const videoToggle = document.getElementById('video-toggle');
+    const playIcon = document.getElementById('play-icon');
+    videoToggle.addEventListener('click', () => {
+      if (brandVideo.paused) {
+        brandVideo.play();
+        playIcon.style.opacity = '0';
+      } else {
+        brandVideo.pause();
+        playIcon.style.opacity = '1';
+      }
+    });
+    brandVideo.addEventListener('pause', () => { playIcon.style.opacity = '1'; });
+    brandVideo.addEventListener('play', () => { playIcon.style.opacity = '0'; });
 
     // Navbar shadow on scroll
     const navbar = document.getElementById('navbar');
