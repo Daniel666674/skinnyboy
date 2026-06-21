@@ -862,9 +862,45 @@
   <div class="container">
     <p class="footer-brand">SKINNY BOY · PROPUESTA 2026</p>
     <p class="footer-note">Daniel Acosta · daniel.f.acosta96@gmail.com · +57 313 666 2777</p>
-    <p class="footer-note" style="margin-top:4px;">Juan Manuel Díaz · j-dico@outlook.com · +57 314 854 3846</p>
   </div>
 </footer>
 
+
+<!-- ====== CONFIDENTIAL PROTECTION ====== -->
+<style>
+  #conf-bar { position:fixed; top:0; left:0; right:0; z-index:9999; background:#0A0A0A; border-bottom:2px solid #E8C84A; padding:.5rem 1.2rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; font-family:'Inter',sans-serif; font-size:.72rem; font-weight:600; letter-spacing:.06em; color:rgba(255,255,255,0.7); }
+  #conf-bar .conf-label { color:#E8C84A; }
+  #conf-bar .conf-right { text-align:right; white-space:nowrap; }
+  body { padding-top:36px; }
+  #conf-wm { position:fixed; inset:0; z-index:9998; pointer-events:none; overflow:hidden; }
+  #conf-wm::before { content:''; position:absolute; inset:-100%; background-image:repeating-linear-gradient(45deg,transparent,transparent 120px,rgba(10,10,10,.0) 120px,rgba(10,10,10,.0) 240px); }
+  .wm-text { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+  .wm-text span { font-family:'Inter',sans-serif; font-size:clamp(1rem,2.5vw,1.6rem); font-weight:900; letter-spacing:.25em; color:rgba(0,0,0,0.06); transform:rotate(-35deg); white-space:nowrap; user-select:none; -webkit-user-select:none; }
+  @media(prefers-color-scheme:dark){ .wm-text span { color:rgba(255,255,255,0.04); } }
+</style>
+
+<div id="conf-bar">
+  <span><span class="conf-label">⚠ CONFIDENCIAL</span> &nbsp;·&nbsp; Propuesta exclusiva · No compartir sin autorización</span>
+  <span class="conf-right">© Daniel Acosta · 2026</span>
+</div>
+
+<div id="conf-wm">
+  <div class="wm-text"><span>PROPUESTA CONFIDENCIAL · USO NO AUTORIZADO PROHIBIDO · PROPUESTA CONFIDENCIAL · USO NO AUTORIZADO PROHIBIDO</span></div>
+</div>
+
+<script>
+  (function(){
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', function(e){
+      const k = e.key.toLowerCase();
+      if (e.ctrlKey && ['u','s','a','p'].includes(k)) { e.preventDefault(); return false; }
+      if (e.ctrlKey && e.shiftKey && ['i','j','c'].includes(k)) { e.preventDefault(); return false; }
+      if (e.key === 'F12') { e.preventDefault(); return false; }
+    });
+    Object.defineProperty(document,'oncontextmenu',{get:()=>null,set:()=>{}});
+    console.log('%c⚠ DOCUMENTO CONFIDENCIAL', 'color:#E8C84A;font-size:18px;font-weight:bold;');
+    console.log('%cEste material es propiedad intelectual de Daniel Acosta. Su reproducción, distribución o uso no autorizado está prohibido y puede constituir una violación de derechos de autor bajo la Ley 23 de 1982 de Colombia.', 'color:#cc0000;font-size:13px;');
+  })();
+</script>
 </body>
 </html>
