@@ -74,6 +74,20 @@
     .dot.active { background:#0A0A0A; width:24px; border-radius:4px; }
     .toast { transform:translateX(110%); transition:transform .4s ease; }
     .toast.show { transform:translateX(0); }
+
+    /* Cookie banner */
+    #cookie-banner { position:fixed; bottom:0; left:0; right:0; z-index:80; background:#0A0A0A; border-top:1px solid rgba(255,255,255,0.1); padding:1rem 1.25rem; display:flex; flex-direction:column; gap:.75rem; transform:translateY(100%); transition:transform .4s ease; }
+    #cookie-banner.visible { transform:translateY(0); }
+    @media(min-width:640px){ #cookie-banner { flex-direction:row; align-items:center; justify-content:space-between; padding:1rem 2rem; } }
+    #cookie-banner p { font-size:.78rem; color:rgba(255,255,255,0.5); line-height:1.5; }
+    #cookie-banner p a { color:rgba(255,255,255,0.75); text-decoration:underline; }
+    #cookie-banner p a:hover { color:#E8C84A; }
+    .cookie-btns { display:flex; gap:.6rem; flex-shrink:0; }
+    .cookie-btn { font-size:.75rem; font-weight:600; letter-spacing:.06em; padding:.45rem 1rem; border-radius:4px; border:none; cursor:pointer; transition:background .2s; white-space:nowrap; }
+    .cookie-btn-accept { background:#E8C84A; color:#0A0A0A; }
+    .cookie-btn-accept:hover { background:#d4b43c; }
+    .cookie-btn-reject { background:transparent; color:rgba(255,255,255,0.4); border:1px solid rgba(255,255,255,0.15); }
+    .cookie-btn-reject:hover { color:#fff; border-color:rgba(255,255,255,0.4); }
     .nav-link { position:relative; }
     .nav-link::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px; background:#0A0A0A; transition:width .3s; }
     .nav-link:hover::after { width:100%; }
@@ -480,10 +494,26 @@
       </div>
       <div class="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/30">
         <p>&copy; 2026 Skinny Boy. Todos los derechos reservados.</p>
+        <div class="flex flex-wrap justify-center gap-x-4 gap-y-1">
+          <a href="politica-privacidad.html" class="hover:text-white/60 transition-colors">Privacidad</a>
+          <a href="politica-cookies.html" class="hover:text-white/60 transition-colors">Cookies</a>
+          <a href="envios.html" class="hover:text-white/60 transition-colors">Envíos</a>
+          <a href="devoluciones.html" class="hover:text-white/60 transition-colors">Devoluciones</a>
+          <a href="terminos.html" class="hover:text-white/60 transition-colors">Términos</a>
+        </div>
         <p>Hecho a mano con ♥ en Colombia 🇨🇴</p>
       </div>
     </div>
   </footer>
+
+  <!-- ===================== COOKIE BANNER ===================== -->
+  <div id="cookie-banner" role="dialog" aria-label="Aviso de cookies">
+    <p>Usamos cookies para el carrito y análisis anónimos del sitio. Lee nuestra <a href="politica-cookies.html">Política de Cookies</a> y <a href="politica-privacidad.html">Política de Privacidad</a>.</p>
+    <div class="cookie-btns">
+      <button class="cookie-btn cookie-btn-reject" onclick="setCookieConsent('rejected')">Solo necesarias</button>
+      <button class="cookie-btn cookie-btn-accept" onclick="setCookieConsent('accepted')">Aceptar todo</button>
+    </div>
+  </div>
 
   <!-- ===================== FLOATING WHATSAPP ===================== -->
   <a href="https://wa.me/573138920027?text=Hola%2C%20quiero%20info%20sobre%20Skinny%20Boy" target="_blank" class="wa-float" aria-label="WhatsApp">
@@ -942,6 +972,16 @@
     // ── NAVBAR SHADOW ──────────────────────────────────────────────
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => { navbar.style.boxShadow = window.scrollY > 60 ? '0 1px 12px rgba(0,0,0,0.08)' : 'none'; }, { passive:true });
+
+    // ── COOKIE CONSENT ────────────────────────────────────────────
+    const cookieBanner = document.getElementById('cookie-banner');
+    function setCookieConsent(val) {
+      localStorage.setItem('sb_cookie_consent', val);
+      cookieBanner.classList.remove('visible');
+    }
+    if (!localStorage.getItem('sb_cookie_consent')) {
+      setTimeout(() => cookieBanner.classList.add('visible'), 1200);
+    }
 
     updateCartUI();
   </script>
