@@ -985,5 +985,35 @@
 
     updateCartUI();
   </script>
+
+  <!-- ====== CONFIDENTIAL PROTECTION ====== -->
+  <style>
+    #conf-bar { position:fixed; top:0; left:0; right:0; z-index:9999; background:#0A0A0A; border-bottom:2px solid #E8C84A; padding:.45rem 1.2rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; font-family:'Inter',sans-serif; font-size:.7rem; font-weight:600; letter-spacing:.06em; color:rgba(255,255,255,0.65); }
+    #conf-bar .conf-label { color:#E8C84A; }
+    #conf-wm { position:fixed; inset:0; z-index:9000; pointer-events:none; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+    #conf-wm span { font-family:'Inter',sans-serif; font-size:clamp(1rem,2.5vw,1.5rem); font-weight:900; letter-spacing:.22em; color:rgba(0,0,0,0.055); transform:rotate(-35deg); white-space:nowrap; user-select:none; -webkit-user-select:none; }
+  </style>
+
+  <div id="conf-bar">
+    <span><span class="conf-label">⚠ PROPUESTA CONFIDENCIAL</span> &nbsp;·&nbsp; Mockup exclusivo · No distribuir sin autorización</span>
+    <span>© Daniel Acosta · 2026</span>
+  </div>
+
+  <div id="conf-wm"><span>PROPUESTA CONFIDENCIAL · SKINNY BOY · USO NO AUTORIZADO PROHIBIDO</span></div>
+
+  <script>
+    (function(){
+      document.body.style.paddingTop = (parseInt(document.body.style.paddingTop)||0) + 'px';
+      document.addEventListener('contextmenu', e => e.preventDefault());
+      document.addEventListener('keydown', function(e){
+        const k = e.key.toLowerCase();
+        if (e.ctrlKey && ['u','s','a','p'].includes(k)) { e.preventDefault(); return false; }
+        if (e.ctrlKey && e.shiftKey && ['i','j','c'].includes(k)) { e.preventDefault(); return false; }
+        if (e.key === 'F12') { e.preventDefault(); return false; }
+      });
+      console.log('%c⚠ DOCUMENTO CONFIDENCIAL', 'color:#E8C84A;font-size:18px;font-weight:bold;');
+      console.log('%cEste mockup es propiedad intelectual de Daniel Acosta. Su reproducción o distribución no autorizada está prohibida bajo la Ley 23 de 1982 de Colombia.', 'color:#cc0000;font-size:13px;');
+    })();
+  </script>
 </body>
 </html>
