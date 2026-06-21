@@ -329,36 +329,6 @@
       line-height: 1.75;
     }
     .verdict-text strong { color: var(--white); }
-    .cta-btn {
-      display: inline-block;
-      background: #25D366;
-      color: #fff;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      text-decoration: none;
-      padding: 16px 36px;
-      border-radius: 8px;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 8px 32px rgba(37,211,102,0.35);
-    }
-    .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(37,211,102,0.45); }
-    .cta-secondary {
-      display: inline-block;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      text-decoration: none;
-      padding: 15px 28px;
-      border-radius: 8px;
-      margin-left: 12px;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .cta-secondary:hover { border-color: var(--gold); color: var(--gold); }
 
     /* ── FOOTER ── */
     footer {
@@ -395,7 +365,6 @@
       section { padding: 50px 0; }
       .verdict-box { padding: 32px 20px; }
       .legal-card { padding: 24px 20px; }
-      .cta-secondary { display: block; margin: 12px 0 0; }
       .compare-table th, .compare-table td { padding: 12px 14px; font-size: 12px; }
     }
   </style>
@@ -454,8 +423,16 @@
       <div class="problem-card">
         <div class="problem-icon">💬</div>
         <div>
-          <p class="problem-title">Cero botones de WhatsApp en el sitio</p>
-          <p class="problem-desc">Tu negocio vende por WhatsApp. El sitio <strong>no tiene un solo botón de WhatsApp</strong> — ni en los productos, ni flotante, ni en el footer. El cliente tiene que salir del sitio, buscar tu número manualmente, y escribirte sin contexto. La mayoría no llega a hacerlo.</p>
+          <p class="problem-title">WhatsApp solo para "Personalizaciones"</p>
+          <p class="problem-desc">El botón de WhatsApp en cada producto dice <strong>"Consultar por WhatsApp (Personalizaciones)"</strong> — es un canal secundario, no el canal principal de venta. No hay botón flotante visible desde todas las páginas, y en la home no hay WhatsApp directo. Para un negocio que cierra el 90% por WhatsApp, este canal debería ser el protagonista, no una opción escondida.</p>
+        </div>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-icon">🛒</div>
+        <div>
+          <p class="problem-title">"Comprar Sobre Pedido" recolectando pagos sin respaldo legal</p>
+          <p class="problem-desc">El botón naranja <strong>"Comprar Sobre Pedido (30 días)"</strong> lleva a un checkout que cobra $15.000 de envío, recoge datos personales completos y procesa pagos por Mercado Pago y PayPal — <strong>todo sin política de privacidad, sin términos y condiciones, y sin derecho de retracto.</strong> Eso no es solo un mal diseño. Es una infracción legal que puede generar multas millonarias.</p>
         </div>
       </div>
 
@@ -682,8 +659,8 @@
           </tr>
           <tr>
             <td>WhatsApp</td>
-            <td>No existe en ningún punto del sitio</td>
-            <td>En cada producto + flotante + checkout</td>
+            <td>Solo para "Personalizaciones", sin flotante</td>
+            <td>Canal principal: en cada producto + flotante + checkout</td>
           </tr>
           <tr>
             <td>Historia de marca</td>
@@ -706,9 +683,9 @@
             <td>Feed integrado con 107K seguidores</td>
           </tr>
           <tr>
-            <td>Carrito</td>
-            <td>Checkout sin WhatsApp</td>
-            <td>Carrito → WhatsApp o formulario</td>
+            <td>Checkout</td>
+            <td>Cobra pagos sin respaldo legal</td>
+            <td>Carrito → WhatsApp o formulario con T&C</td>
           </tr>
           <tr>
             <td>Carga</td>
@@ -747,12 +724,6 @@
         Tu marca tiene <strong>107K personas que creen en ella.</strong> El sitio debería estar a esa altura. Hoy no lo está — y encima te deja expuesto legalmente.<br/><br/>
         Lo que construimos ya está en vivo, con tus fotos reales, y funciona en tu celular ahora mismo. Compáralo y la diferencia habla sola.
       </p>
-      <a href="https://htmlpreview.github.io/?https://github.com/Daniel666674/skinnyboy/blob/main/index.html" target="_blank" class="cta-btn">
-        Ver el mockup en vivo →
-      </a>
-      <a href="https://wa.me/573136662777?text=Hola%2C%20vi%20el%20an%C3%A1lisis%20de%20mi%20sitio%20y%20quiero%20hablar" target="_blank" class="cta-secondary">
-        Hablar por WhatsApp
-      </a>
     </div>
 
   </div>
